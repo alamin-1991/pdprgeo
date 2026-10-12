@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Permainan Interaktif Geografi Tingkatan 1 (KSSM)</title>
+
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #10b981;
+      --secondary-dark: #059669;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --card-bg: #ffffff;
+      --border-radius: 16px;
+      --shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      color: var(--dark);
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 950px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Top Bar Header */
+    .app-header {
+      background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+      color: white;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .app-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-title i {
+      font-size: 28px;
+      color: #7dd3fc;
+    }
+
+    .app-title h1 {
+      font-family: 'Fredoka', cursive;
+      font-size: 22px;
+      letter-spacing: 0.5px;
+    }
+
+    .app-title p {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .sound-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .sound-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    /* Screen Views */
+    .screen {
+      display: none;
+      padding: 30px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Registration Screen */
+    .welcome-card {
+      text-align: center;
+      max-width: 550px;
+      margin: 0 auto;
+      padding: 10px 0;
+    }
+
+    .welcome-icon {
+      font-size: 60px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 14px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4);
+    }
+
+    /* Rules Grid */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .rule-box {
+      background: var(--primary-light);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .rule-box i {
+      font-size: 24px;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+
+    .rule-box h4 {
+      font-size: 13px;
+      color: var(--primary-dark);
+    }
+
+    .rule-box p {
+      font-size: 11px;
+      color: #0369a1;
+      margin-top: 2px;
+    }
+
+    /* Quiz Header Stats */
+    .quiz-stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f1f5f9;
+      padding: 15px 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin-bottom: 25px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #10b981);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Question Box */
+    .question-card {
+      background: #ffffff;
+      border: 2px solid #f1f5f9;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .topic-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    /* Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      position: relative;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateX(4px);
+    }
+
+    .option-btn .prefix {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: white;
+      border: 1.5px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-weight: 700;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+
+    .option-btn.correct {
+      background: #dcfce7 !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+    }
+
+    .option-btn.correct .prefix {
+      background: #22c55e;
+      color: white;
+      border-color: #22c55e;
+    }
+
+    .option-btn.wrong {
+      background: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+
+    .option-btn.wrong .prefix {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+    }
+
+    .option-btn.disabled {
+      pointer-events: none;
+    }
+
+    /* Question Navigation Grid */
+    .q-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .q-nav-btn {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .q-nav-btn.current {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
+    .q-nav-btn.answered-correct {
+      background: #22c55e;
+      color: white;
+      border-color: #22c55e;
+    }
+
+    .q-nav-btn.answered-wrong {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+    }
+
+    /* Results Screen */
+    .result-card {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .score-badge-large {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #0d9488);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3);
+    }
+
+    .score-badge-large .score-num {
+      font-size: 38px;
+      font-weight: 800;
+      font-family: 'Fredoka', cursive;
+      line-height: 1;
+    }
+
+    .score-badge-large .score-total {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .result-details-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .res-box {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .res-box h5 {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 5px;
+    }
+
+    .res-box p {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    /* Tabs & Review */
+    .tab-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .review-item {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 5px solid #cbd5e1;
+      text-align: left;
+    }
+
+    .review-item.is-correct { border-left-color: #22c55e; }
+    .review-item.is-wrong { border-left-color: #ef4444; }
+
+    .review-q {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1e293b;
+      font-size: 15px;
+    }
+
+    .review-ans {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .review-explanation {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 12px;
+      color: #0369a1;
+      background: #f0f9ff;
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    /* Leaderboard Table */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .leaderboard-table th, .leaderboard-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+    }
+
+    .leaderboard-table th {
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .top-rank {
+      font-weight: 800;
+      color: #d97706;
+    }
+
+    /* Modal / Alert status */
+    .status-msg {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .status-msg.success {
+      background: #dcfce7;
+      color: #15803d;
+      display: block;
+    }
+
+    .status-msg.error {
+      background: #fee2e2;
+      color: #b91c1c;
+      display: block;
+    }
+
+    @media (max-width: 640px) {
+      .rules-grid, .result-details-grid {
+        grid-template-columns: 1fr;
+      }
+      .q-nav-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+      .app-header {
+        padding: 15px 20px;
+      }
+      .app-title h1 {
+        font-size: 18px;
+      }
+      .screen {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Header App -->
+  <header class="app-header">
+    <div class="app-title">
+      <i class="fa-solid fa-earth-asia"></i>
+      <div>
+        <h1>Cabaran Geografi Tingkatan 1</h1>
+        <p>Kuiz Interaktif DSKP KSSM Geografi</p>
+      </div>
+    </div>
+    <button class="sound-btn" id="soundToggle" title="Matikan/Hidupkan Bunyi">
+      <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+    </button>
+  </header>
+
+  <!-- SCREEN 1: Registration Form -->
+  <section id="screenRegister" class="screen active">
+    <div class="welcome-card">
+      <div class="welcome-icon">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <h2 style="font-family:'Fredoka'; font-size: 26px; color: #0f172a; margin-bottom: 8px;">Pendaftaran Pelajar</h2>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Sila lengkapkan maklumat diri anda sebelum memulakan kuiz Geografi Tingkatan 1.</p>
+
+      <form id="regForm">
+        <div class="form-group">
+          <label for="studentName"><i class="fa-solid fa-user"></i> Nama Penuh Pelajar</label>
+          <input type="text" id="studentName" class="form-control" placeholder="Contoh: Muhammad Amirul bin Rosli" required>
+        </div>
+
+        <div class="form-group">
+          <label for="studentClass"><i class="fa-solid fa-school"></i> Kelas / Tingkatan</label>
+          <input type="text" id="studentClass" class="form-control" placeholder="Contoh: 1 Cemerlang" required>
+        </div>
+
+        <div class="rules-grid">
+          <div class="rule-box">
+            <i class="fa-solid fa-circle-question"></i>
+            <h4>30 Soalan</h4>
+            <p>Berdasarkan DSKP T1</p>
+          </div>
+          <div class="rule-box">
+            <i class="fa-solid fa-award"></i>
+            <h4>Sistem Markah</h4>
+            <p>Betul: +2 | Salah: -1</p>
+          </div>
+          <div class="rule-box">
+            <i class="fa-solid fa-stopwatch"></i>
+            <h4>Masa Berjalan</h4>
+            <p>Masa menjawab direkod</p>
+          </div>
+        </div>
+
+        <button type="button" id="btnStartQuiz" class="btn">
+          <i class="fa-solid fa-play"></i> Mula Meneroka & Jawab Kuiz
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: Quiz Engine -->
+  <section id="screenQuiz" class="screen">
+    <!-- Quiz Top Stats -->
+    <div class="quiz-stats-bar">
+      <div class="stat-item">
+        <div class="stat-icon" style="color: var(--primary);"><i class="fa-solid fa-list-check"></i></div>
+        <div>
+          <div class="stat-label">Soalan</div>
+          <div class="stat-value" id="qCurrentIndex">1 / 30</div>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon" style="color: var(--accent);"><i class="fa-solid fa-trophy"></i></div>
+        <div>
+          <div class="stat-label">Skor Terkumpul</div>
+          <div class="stat-value" id="qScore">0</div>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon" style="color: var(--secondary);"><i class="fa-solid fa-clock"></i></div>
+        <div>
+          <div class="stat-label">Masa</div>
+          <div class="stat-value" id="qTimer">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card">
+      <span class="topic-badge" id="qTopic">BAB 1: ARAH</span>
+      <h3 class="question-text" id="qText">Loading soalan...</h3>
+    </div>
+
+    <!-- Options -->
+    <div class="options-grid" id="optionsContainer">
+      <!-- Options injected via JS -->
+    </div>
+
+    <!-- Question Grid Navigator -->
+    <div style="margin-top: 25px;">
+      <p style="font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 8px;">NAVIGASI SOALAN:</p>
+      <div class="q-nav-grid" id="qNavGrid">
+        <!-- Buttons 1-30 generated via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: Results & Leaderboard -->
+  <section id="screenResult" class="screen">
+    <div class="result-card">
+      <h2 style="font-family:'Fredoka'; font-size: 28px; color: #0f172a;">Tahniah, Permainan Tamat!</h2>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;" id="resStudentInfo">Ahmad | 1 Cemerlang</p>
+
+      <div class="score-badge-large">
+        <span class="score-num" id="resScore">0</span>
+        <span class="score-total">Mata (+2 / -1)</span>
+      </div>
+
+      <div class="result-details-grid">
+        <div class="res-box">
+          <h5>Gred / Tahap</h5>
+          <p id="resGrade">A (Cemerlang)</p>
+        </div>
+        <div class="res-box">
+          <h5>Peratusan</h5>
+          <p id="resPercentage">0%</p>
+        </div>
+        <div class="res-box">
+          <h5>Masa Diambil</h5>
+          <p id="resTime">0s</p>
+        </div>
+      </div>
+
+      <div id="syncStatus" class="status-msg"></div>
+
+      <!-- Navigation Tabs -->
+      <div class="tab-nav">
+        <button class="tab-btn active" id="tabBtnReview" onclick="switchTab('review')">
+          <i class="fa-solid fa-file-signature"></i> Semakan Jawapan
+        </button>
+        <button class="tab-btn" id="tabBtnLeaderboard" onclick="switchTab('leaderboard')">
+          <i class="fa-solid fa-ranking-star"></i> Carta Markah (Leaderboard)
+        </button>
+      </div>
+
+      <!-- Tab Content 1: Review -->
+      <div id="tabContentReview" style="max-height: 400px; overflow-y: auto; padding-right: 5px;">
+        <div id="reviewContainer">
+          <!-- Answer review list rendered here -->
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Leaderboard -->
+      <div id="tabContentLeaderboard" style="display: none; max-height: 400px; overflow-y: auto;">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nama Pelajar</th>
+              <th>Kelas</th>
+              <th>Skor</th>
+              <th>Masa</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <!-- Leaderboard rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 25px; display: flex; gap: 10px;">
+        <button type="button" class="btn" onclick="resetQuiz()">
+          <i class="fa-solid fa-rotate-right"></i> Cuba Lagi
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/**
+ * URL BACKEND GOOGLE APPS SCRIPT (HARDCODED)
+ */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9WJPnHGIdPkHCTjUmwY2177Xb0ckMv9oe4Awx5GEE7xoh4Y76SHZScLt-UJJWeAst/exec";
+
+/**
+ * BANK 30 SOALAN BAHARU GEOGRAFI TINGKATAN 1 (DSKP KSSM)
+ */
+const questionsData = [
+  // 1.0 KEMAHIRAN GEOGRAFI
+  {
+    topic: "1.1 ARAH",
+    question: "Apakah bearing sudutan bagi arah Barat pada kompas?",
+    options: ["0° / 360°", "90°", "180°", "270°"],
+    answer: 3,
+    explanation: "Arah Barat berada pada nilai sudut 270° mengikut arah pusingan jam dari Utara (0°)."
+  },
+  {
+    topic: "1.1 ARAH",
+    question: "Antara berikut, manakah langkah PERTAMA yang betul semasa menggunakan kompas magnetik untuk menentukan arah?",
+    options: [
+      "Membaca nilai bearing terus dari cermin kompas",
+      "Meletakkan kompas di atas permukaan yang rata dan jauh daripada objek besi",
+      "Pusingkan badan mengikut arah pusingan jam",
+      "Memegang kompas rapat dengan telefon bimbit"
+    ],
+    answer: 1,
+    explanation: "Kompas mesti diletakkan di atas permukaan rata dan dijauhkan daripada besi supaya magnet jarum tidak terganggu."
+  },
+  {
+    topic: "1.2 KEDUDUKAN",
+    question: "Apakah garisan longitud bernilai 0° yang menjadi rujukan masa dunia dan melalui Greenwich, London?",
+    options: ["Garisan Khatulistiwa", "Garisan Meridian Pangkal", "Garisan Tarikh Antarabangsa", "Garisan Sartan"],
+    answer: 1,
+    explanation: "Garisan Meridian Pangkal ialah longitud 0° yang membahagi bumi kepada Hemisfera Timur dan Barat."
+  },
+  {
+    topic: "1.2 KEDUDUKAN",
+    question: "Kedudukan murid di dalam bilik darjah biasanya dinyatakan menggunakan sistem...",
+    options: ["Latitud dan longitud", "Lajur dan baris", "Bearing dan jarak", "Sudut azimuth"],
+    answer: 1,
+    explanation: "Kedudukan relatif murid di dalam kelas ditentukan berasaskan lajur (menegak) dan baris (melintang)."
+  },
+  {
+    topic: "1.3 PETA LAKAR",
+    question: "Apakah fungsi utama simbol dalam peta lakar?",
+    options: [
+      "Mencantikkan lukisan peta",
+      "Mewakili ciri fizikal dan budaya di permukaan bumi",
+      "Mengira masa perjalanan secara tepat",
+      "Menunjukkan ketebalan lapisan tanah"
+    ],
+    answer: 1,
+    explanation: "Simbol (titik, garisan, kawasan, singkatan) digunakan untuk mewakili pelbagai ciri fizikal dan budaya pada peta."
+  },
+  {
+    topic: "1.3 PETA LAKAR",
+    question: "Simbol garisan berkembar berwarna merah pada peta lakar biasanya merujuk kepada ciri pandang darat...",
+    options: ["Sungai", "Jalan raya bertar", "Laluan kereta api", "Sempadan negeri"],
+    answer: 1,
+    explanation: "Jalan raya bertar diwakili oleh garisan berkembar pada peta lakar."
+  },
+  {
+    topic: "1.4 LAKARAN PETA MALAYSIA",
+    question: "Antara bandar berikut, yang manakah merupakan Ibu Negeri bagi Perak?",
+    options: ["Taiping", "Ipoh", "Teluk Intan", "Kuala Kangsar"],
+    answer: 1,
+    explanation: "Ipoh merupakan pusat pentadbiran dan Ibu Negeri bagi negeri Perak."
+  },
+  {
+    topic: "1.4 LAKARAN PETA MALAYSIA",
+    question: "Selain Kuala Lumpur dan Putrajaya, manakah satu lagi Wilayah Persekutuan di Malaysia?",
+    options: ["Labuan", "Langkawi", "Pangkor", "Tioman"],
+    answer: 0,
+    explanation: "Terdapat 3 Wilayah Persekutuan di Malaysia iaitu WP Kuala Lumpur, WP Putrajaya, dan WP Labuan."
+  },
+
+  // 2.0 GEOGRAFI FIZIKAL
+  {
+    topic: "2.1 BUMI",
+    question: "Lapisan struktur bumi yang terletak di antara kerak bumi dengan teras bumi dikenali sebagai...",
+    options: ["Sial", "Sima", "Mantal", "Astenosfera"],
+    answer: 2,
+    explanation: "Mantal terletak di bawah kerak bumi dan merangkumi sebahagian besar jisim bumi."
+  },
+  {
+    topic: "2.1 BUMI",
+    question: "Fenomena seperti gempa bumi dan letusan gunung berapi berlaku disebabkan oleh...",
+    options: ["Tarikan graviti bulan", "Pergerakan plat atau kerak bumi", "Perubahan tiupan angin monsun", "Hakisan air sungai"],
+    answer: 1,
+    explanation: "Pergerakan kerak bumi (pertembungan atau pemisahan plat tektonik) menyebabkan gempa bumi dan pembentukan gunung berapi."
+  },
+  {
+    topic: "2.1 BUMI",
+    question: "Apakah lautan yang paling luas dan paling dalam di dunia?",
+    options: ["Lautan Atlantik", "Lautan Hindi", "Lautan Pasifik", "Lautan Artik"],
+    answer: 2,
+    explanation: "Lautan Pasifik ialah lautan terbesar di dunia yang meliputi kawasan seluas lebih 165 juta km²."
+  },
+  {
+    topic: "2.1 BUMI",
+    question: "Komponen biosfera dalam sistem fizikal bumi merangkumi...",
+    options: ["Semua kawasan batuan keras", "Semua jenis air dan ais", "Lapisan udara di sekeliling bumi", "Kawasan yang didiami oleh benda hidup"],
+    answer: 3,
+    explanation: "Biosfera merangkumi bahagian bumi yang didiami oleh pelbagai hidupan (manusia, haiwan, dan tumbuhan)."
+  },
+  {
+    topic: "2.2 BENTUK MUKA BUMI DI MALAYSIA",
+    question: "Banjaran gunung yang menjadi 'tulang belakang' Penara Semenanjung Malaysia ialah...",
+    options: ["Banjaran Crocker", "Banjaran Titiwangsa", "Banjaran Bintang", "Banjaran Brassey"],
+    answer: 1,
+    explanation: "Banjaran Titiwangsa menganjur dari utara ke selatan dan merupakan tulang belakang Semenanjung Malaysia."
+  },
+  {
+    topic: "2.2 BENTUK MUKA BUMI DI MALAYSIA",
+    question: "Mengapakah kawasan tanah tinggi seperti Cameron Highlands (Pahang) dan Kundasang (Sabah) penting dari segi ekonomi?",
+    options: [
+      "Kawasan penanaman padi sawah utama",
+      "Pusat perlombongan petroleum",
+      "Pusat pelancongan dan pertanian tanaman hawa sederhana",
+      "Hab pelabuhan perkapalan utama"
+    ],
+    answer: 2,
+    explanation: "Suhu yang nyaman menjadikan kawasan ini sesuai untuk pelancongan dan penanaman teh, sayur-sayuran, serta bunga hawa sederhana."
+  },
+  {
+    topic: "2.2 BENTUK MUKA BUMI DI MALAYSIA",
+    question: "Bentuk muka bumi pinggir laut seperti 'Gerbang Laut' dan 'Tunggul Sisa' terbentuk akibat proses...",
+    options: ["Hakisan ombak secara berterusan", "Mendapan pasir oleh arus laut", "Letupan gunung berapi dasar laut", "Pengumpulan terumbu karang"],
+    answer: 0,
+    explanation: "Hakisan ombak menembus tebing tinggi untuk membentuk gua, gerbang laut, tiang batu (tunggul sisa)."
+  },
+  {
+    topic: "2.3 SALIRAN DI MALAYSIA",
+    question: "Ciri pandang darat fizikal seperti 'Delta' dan 'Tasik Ladam' biasanya ditemui pada peringkat aliran sungai...",
+    options: ["Hulu sungai", "Tengah sungai", "Hilir sungai", "Puncak gunung"],
+    answer: 2,
+    explanation: "Peringkat hilir sungai mempunyai aliran lambat dan proses mendapan tinggi yang membentuk delta dan tasik ladam."
+  },
+  {
+    topic: "2.3 SALIRAN DI MALAYSIA",
+    question: "Apakah kepentingan utama sungai di kawasan pedalaman Sarawak seperti Sungai Rajang?",
+    options: ["Pusat rekreasi sukan ski air", "Jalan pengangkutan dan perhubungan utama", "Sumber asas industri pemprosesan kelapa sawit", "Sempadan antarabangsa dengan Singapura"],
+    answer: 1,
+    explanation: "Sungai Rajang memainkan peranan penting sebagai lebuh raya air untuk menghubungkan kawasan pedalaman Sarawak."
+  },
+  {
+    topic: "2.3 SALIRAN DI MALAYSIA",
+    question: "Tasik Kenyir di Terengganu merupakan contoh tasik buatan manusia terbesar yang dibina terutamanya untuk...",
+    options: ["Aktiviti perlombongan bijih timah", "Jana kuasa hidroelektrik", "Projek penternakan ikan keli", "Latihan perkapalan tentera laut"],
+    answer: 1,
+    explanation: "Tasik Kenyir dibina hasil pembinaan Empangan Kenyir untuk menjana kuasa hidroelektrik."
+  },
+
+  // 3.0 GEOGRAFI MANUSIA
+  {
+    topic: "3.1 PENDUDUK DI MALAYSIA",
+    question: "Kawasan pedalaman Sabah dan Sarawak serta kawasan bertanah tinggi bercuram umumnya mempunyai taburan penduduk...",
+    options: ["Sangat padat", "Sederhana", "Jarang", "Tepu"],
+    answer: 2,
+    explanation: "Bentuk muka bumi bercuram, hutan tebal dan ketiadaan ketersambungan jalan menyebabkan penduduknya jarang."
+  },
+  {
+    topic: "3.1 PENDUDUK DI MALAYSIA",
+    question: "Apakah faktor utama yang menyebabkan kawasan Lembah Klang berpenduduk sangat padat?",
+    options: [
+      "Banyak kawasan tanah tinggi berudara sejuk",
+      "Pusat kegiatan ekonomi, perindustrian, pentadbiran dan kemudahan asas yang lengkap",
+      "Kawasan utama penanaman padi negara",
+      "Banyak terdapat kawasan paya dan hutan bakau"
+    ],
+    answer: 1,
+    explanation: "Lembah Klang ialah nadi ekonomi dan urbanisasi negara dengan peluang pekerjaan yang sangat luas."
+  },
+  {
+    topic: "3.2 PETEMPATAN DI MALAYSIA",
+    question: "Apakah pola petempatan di mana rumah-rumah dibina secara berselerak dan agak jauh antara satu sama lain?",
+    options: ["Pola Berpusat", "Pola Sejajar", "Pola Berterabur", "Pola Berkelompok"],
+    answer: 2,
+    explanation: "Pola berterabur biasanya ditemui di kawasan kebun, sawah padi atau kawasan luar bandar tradisional."
+  },
+  {
+    topic: "3.2 PETEMPATAN DI MALAYSIA",
+    question: "Manakah antara berikut merupakan salah satu ciri utama petempatan BANDAR di Malaysia?",
+    options: [
+      "Jumlah penduduk kurang daripada 1,000 orang",
+      "Kemudahan asas terhad kepada jalan tanah merah",
+      "Jumlah penduduk melebihi 10,000 orang dan kaya dengan kemudahan perkhidmatan",
+      "Kegiatan ekonomi tertumpu kepada perikanan tradisional sahaja"
+    ],
+    answer: 2,
+    explanation: "Petempatan bandar di Malaysia mempunyai penduduk sekurang-kurangnya 10,000 orang dengan pelbagai fungsi ekonomi."
+  },
+
+  // 4.0 GEOGRAFI KAWASAN
+  {
+    topic: "4.1 ASIA TENGGARA",
+    question: "Satu-satunya negara di rantau Asia Tenggara yang TIDAK mempunyai pinggir laut (terkurung daratan) ialah...",
+    options: ["Myanmar", "Laos", "Kemboja", "Vietnam"],
+    answer: 1,
+    explanation: "Laos ialah negara terkurung daratan (*landlocked country*) di Asia Tenggara kerana dikelilingi oleh 5 negara lain."
+  },
+  {
+    topic: "4.1 ASIA TENGGARA",
+    question: "Sungai Chao Phraya merupakan sungai utama yang sangat penting untuk pertanian dan pengangkutan di negara...",
+    options: ["Thailand", "Vietnam", "Indonesia", "Myanmar"],
+    answer: 0,
+    explanation: "Sungai Chao Phraya mengalir melalui Bangkok dan menjadi nadi pertanian serta pengangkutan di Thailand."
+  },
+  {
+    topic: "4.1 ASIA TENGGARA",
+    question: "Gunung Merapi dan Gunung Krakatau yang merupakan gunung berapi aktif terletak di negara...",
+    options: ["Filipina", "Indonesia", "Malaysia", "Brunei"],
+    answer: 1,
+    explanation: "Indonesia terletak dalam Lingkaran Api Pasifik dan mempunyai banyak gunung berapi aktif."
+  },
+  {
+    topic: "4.2 ASIA TENGGARA",
+    question: "Mengapakah kawasan Delta Sungai Mekong di Vietnam berpenduduk sangat padat?",
+    options: [
+      "Kawasan pusat peranginan salji",
+      "Tanih aluvium yang sangat subur untuk penanaman padi sawah",
+      "Kawasan utama perlombongan emas dunia",
+      "Satu-satunya pusat kewangan percukaian rendah"
+    ],
+    answer: 1,
+    explanation: "Delta Sungai Mekong kaya dengan tanih aluvium yang subur dan menjadi 'mangkuk nasi' Vietnam."
+  },
+  {
+    topic: "4.2 ASIA TENGGARA",
+    question: "Bandar Raya Bangkok di Thailand berfungsi sebagai pusat...",
+    options: [
+      "Pentadbiran, ekonomi, kebudayaan dan pelancongan utama",
+      "Perlombongan bijih besi antarabangsa",
+      "Pertanian kelapa sawit sahaja",
+      "Pusat penyelidikan tenaga nuklear"
+    ],
+    answer: 0,
+    explanation: "Bangkok ialah ibu negara Thailand yang berfungsi sebagai pusat politik, perdagangan, dan pelancongan utama."
+  },
+
+  // 5.0 ISU DAN PENGURUSAN ALAM SEKITAR
+  {
+    topic: "5.1 SUMBER AIR",
+    question: "Apakah yang dimaksudkan dengan 'Air Bawah Tanah'?",
+    options: [
+      "Air yang mengalir di atas permukaan bumi seperti sungai",
+      "Air hujan yang terperangkap di dalam lapisan batuan di bawah permukaan bumi",
+      "Air masin yang diproses dari lautan",
+      "Air yang disalurkan melalui paip domestik"
+    ],
+    answer: 1,
+    explanation: "Air bawah tanah merujuk kepada air yang tersimpan dalam akuifer atau lapisan batuan di bawah tanah."
+  },
+  {
+    topic: "5.1 SUMBER AIR",
+    question: "Antara amalan hijau berikut, yang manakah membantu mengurangkan pembaziran air di rumah?",
+    options: [
+      "Membiarkan paip air mengalir semasa menggosok gigi",
+      "Menadah air hujan untuk mencuci kereta dan menyiram pokok",
+      "Mencuci kereta menggunakan hos secara kerap",
+      "Mandi menggunakan mandian pancuran bertalian terus tanpa had"
+    ],
+    answer: 1,
+    explanation: "Menadah dan menggunakan semula air hujan (*rainwater harvesting*) membantu menjimatkan bekalan air paip bersih."
+  },
+  {
+    topic: "5.2 SISA DOMESTIK",
+    question: "Manakah antara sisa domestik berikut merupakan bahan BUKAN ORGANIK yang sukar terurai?",
+    options: ["Sisa makanan dan kulit buah", "Kertas dan kadbod", "Plastik, tin aluminium dan kaca", "Daun-daun kering"],
+    answer: 2,
+    explanation: "Plastik, kaca dan tin sintetik ialah bahan bukan organik yang mengambil masa ratusan tahun untuk terurai secara semula jadi."
+  }
+];
+
+// STATE VARIABLES
+let currentState = {
+  studentName: '',
+  studentClass: '',
+  currentQ: 0,
+  score: 0,
+  timerSeconds: 0,
+  timerInterval: null,
+  userAnswers: new Array(questionsData.length).fill(null),
+  soundEnabled: true,
+  audioCtx: null
+};
+
+// INITIALIZATION
+document.addEventListener("DOMContentLoaded", () => {
+  // Sound toggle button
+  document.getElementById("soundToggle").addEventListener("click", toggleSound);
+
+  // Registration button event listener
+  document.getElementById("btnStartQuiz").addEventListener("click", startQuiz);
+
+  // Initialize Web Audio API on user interaction
+  document.body.addEventListener('click', initAudio, { once: true });
+});
+
+function initAudio() {
+  if (!currentState.audioCtx) {
+    currentState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function toggleSound() {
+  currentState.soundEnabled = !currentState.soundEnabled;
+  const icon = document.getElementById("soundIcon");
+  if (currentState.soundEnabled) {
+    icon.className = "fa-solid fa-volume-high";
+  } else {
+    icon.className = "fa-solid fa-volume-xmark";
+  }
+}
+
+// PLAY SYNTHESIZED SOUNDS (WEB AUDIO API)
+function playSound(type) {
+  if (!currentState.soundEnabled || !currentState.audioCtx) return;
+  
+  try {
+    const ctx = currentState.audioCtx;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    const now = ctx.currentTime;
+
+    if (type === 'correct') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, now); // C5
+      osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    } else if (type === 'wrong') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now); // A3
+      osc.frequency.setValueAtTime(174.61, now + 0.1); // F3
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    } else if (type === 'win') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.setValueAtTime(554.37, now + 0.15);
+      osc.frequency.setValueAtTime(659.25, now + 0.3);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+      osc.start(now);
+      osc.stop(now + 0.5);
+    }
+  } catch(e) {
+    console.log("Audio error", e);
+  }
+}
+
+// START QUIZ
+function startQuiz() {
+  const nameInput = document.getElementById("studentName").value.trim();
+  const classInput = document.getElementById("studentClass").value.trim();
+
+  if (!nameInput || !classInput) {
+    alert("Sila masukkan Nama Penuh dan Kelas anda.");
+    return;
+  }
+
+  currentState.studentName = nameInput;
+  currentState.studentClass = classInput;
+
+  // Reset counters
+  currentState.currentQ = 0;
+  currentState.score = 0;
+  currentState.timerSeconds = 0;
+  currentState.userAnswers = new Array(questionsData.length).fill(null);
+
+  // Switch Screen
+  showScreen("screenQuiz");
+
+  // Render question navigation grid
+  renderNavGrid();
+
+  // Load first question
+  loadQuestion(0);
+
+  // Start timer
+  startTimer();
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(screenId).classList.add("active");
+}
+
+function startTimer() {
+  clearInterval(currentState.timerInterval);
+  currentState.timerInterval = setInterval(() => {
+    currentState.timerSeconds++;
+    const mins = Math.floor(currentState.timerSeconds / 60).toString().padStart(2, '0');
+    const secs = (currentState.timerSeconds % 60).toString().padStart(2, '0');
+    document.getElementById("qTimer").textContent = `${mins}:${secs}`;
+  }, 1000);
+}
+
+function renderNavGrid() {
+  const grid = document.getElementById("qNavGrid");
+  grid.innerHTML = "";
+  for (let i = 0; i < questionsData.length; i++) {
+    const btn = document.createElement("button");
+    btn.className = `q-nav-btn ${i === 0 ? 'current' : ''}`;
+    btn.textContent = i + 1;
+    btn.id = `qNavBtn_${i}`;
+    btn.onclick = () => loadQuestion(i);
+    grid.appendChild(btn);
+  }
+}
+
+function updateNavGridUI() {
+  for (let i = 0; i < questionsData.length; i++) {
+    const btn = document.getElementById(`qNavBtn_${i}`);
+    if (!btn) continue;
+    
+    btn.className = "q-nav-btn";
+    if (i === currentState.currentQ) {
+      btn.classList.add("current");
+    }
+
+    const ans = currentState.userAnswers[i];
+    if (ans !== null) {
+      if (ans.isCorrect) {
+        btn.classList.add("answered-correct");
+      } else {
+        btn.classList.add("answered-wrong");
+      }
+    }
+  }
+}
+
+function loadQuestion(index) {
+  currentState.currentQ = index;
+  const q = questionsData[index];
+
+  // Update Stats UI
+  document.getElementById("qCurrentIndex").textContent = `${index + 1} / ${questionsData.length}`;
+  document.getElementById("qScore").textContent = currentState.score;
+  document.getElementById("qTopic").textContent = q.topic;
+  document.getElementById("qText").textContent = q.question;
+
+  // Update Progress Bar
+  const progPct = ((index + 1) / questionsData.length) * 100;
+  document.getElementById("progressBar").style.width = `${progPct}%`;
+
+  // Render Options
+  const container = document.getElementById("optionsContainer");
+  container.innerHTML = "";
+
+  const prefixes = ["A", "B", "C", "D"];
+  const existingRecord = currentState.userAnswers[index];
+
+  q.options.forEach((optText, oIdx) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    
+    btn.innerHTML = `
+      <span class="prefix">${prefixes[oIdx]}</span>
+      <span>${optText}</span>
+    `;
+
+    // If question has already been answered
+    if (existingRecord !== null) {
+      btn.classList.add("disabled");
+      if (oIdx === q.answer) {
+        btn.classList.add("correct");
+      }
+      if (existingRecord.chosenOption === oIdx && !existingRecord.isCorrect) {
+        btn.classList.add("wrong");
+      }
+    } else {
+      btn.onclick = () => selectAnswer(index, oIdx);
+    }
+
+    container.appendChild(btn);
+  });
+
+  updateNavGridUI();
+}
+
+function selectAnswer(qIndex, chosenOpt) {
+  const q = questionsData[qIndex];
+  const isCorrect = (chosenOpt === q.answer);
+
+  // Scoring: +2 for correct, -1 for wrong
+  if (isCorrect) {
+    currentState.score += 2;
+    playSound('correct');
+  } else {
+    currentState.score -= 1;
+    playSound('wrong');
+  }
+
+  // Save answer record
+  currentState.userAnswers[qIndex] = {
+    chosenOption: chosenOpt,
+    isCorrect: isCorrect
+  };
+
+  // Reload current question view
+  loadQuestion(qIndex);
+
+  // Auto advance to next unanswered question after a short delay
+  setTimeout(() => {
+    if (qIndex < questionsData.length - 1) {
+      loadQuestion(qIndex + 1);
+    } else {
+      // Check if all answered
+      const allAnswered = currentState.userAnswers.every(ans => ans !== null);
+      if (allAnswered) {
+        finishQuiz();
+      }
+    }
+  }, 700);
+}
+
+function finishQuiz() {
+  clearInterval(currentState.timerInterval);
+  playSound('win');
+
+  // Calculate percentage
+  const totalQuestions = questionsData.length;
+  const maxPossiblePoints = totalQuestions * 2;
+  const percentage = Math.max(0, Math.round((currentState.score / maxPossiblePoints) * 100));
+
+  // Determine Grade
+  let grade = "E (Bawah Tahap)";
+  if (percentage >= 80) grade = "A (Cemerlang)";
+  else if (percentage >= 65) grade = "B (Kepujian)";
+  else if (percentage >= 50) grade = "C (Baik)";
+  else if (percentage >= 40) grade = "D (Lulus)";
+
+  // Render Result UI
+  document.getElementById("resStudentInfo").textContent = `${currentState.studentName} | Kelas: ${currentState.studentClass}`;
+  document.getElementById("resScore").textContent = currentState.score;
+  document.getElementById("resGrade").textContent = grade;
+  document.getElementById("resPercentage").textContent = `${percentage}%`;
+  document.getElementById("resTime").textContent = `${currentState.timerSeconds}s`;
+
+  // Render Review
+  renderReview();
+
+  // Save score locally for Leaderboard
+  saveLocalLeaderboard({
+    name: currentState.studentName,
+    class: currentState.studentClass,
+    score: currentState.score,
+    time: currentState.timerSeconds,
+    percentage: `${percentage}%`,
+    date: new Date().toLocaleDateString('ms-MY')
+  });
+
+  // Automatically send data to Google Sheets
+  sendDataToGoogleSheet(percentage);
+
+  showScreen("screenResult");
+}
+
+function renderReview() {
+  const container = document.getElementById("reviewContainer");
+  container.innerHTML = "";
+
+  questionsData.forEach((q, idx) => {
+    const userAns = currentState.userAnswers[idx];
+    const isCorrect = userAns ? userAns.isCorrect : false;
+    const chosenText = userAns !== null ? q.options[userAns.chosenOption] : "Tiada Jawapan";
+    const correctText = q.options[q.answer];
+
+    const item = document.createElement("div");
+    item.className = `review-item ${isCorrect ? 'is-correct' : 'is-wrong'}`;
+    
+    item.innerHTML = `
+      <div class="review-q">Soalan ${idx + 1}: ${q.question}</div>
+      <div class="review-ans">
+        <strong>Jawapan Anda:</strong> <span style="color: ${isCorrect ? '#16a34a' : '#dc2626'}">${chosenText}</span>
+      </div>
+      ${!isCorrect ? `<div class="review-ans"><strong>Jawapan Betul:</strong> <span style="color: #16a34a">${correctText}</span></div>` : ''}
+      <div class="review-explanation">
+        <i class="fa-solid fa-circle-info"></i> <strong>Penerangan DSKP:</strong> ${q.explanation}
+      </div>
+    `;
+
+    container.appendChild(item);
+  });
+}
+
+// LOCAL LEADERBOARD MANAGEMENT
+function saveLocalLeaderboard(entry) {
+  let list = JSON.parse(localStorage.getItem("geog_leaderboard") || "[]");
+  list.push(entry);
+  
+  // Sort by score (descending), then time (ascending)
+  list.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return a.time - b.time;
+  });
+
+  // Keep top 20
+  list = list.slice(0, 20);
+  localStorage.setItem("geog_leaderboard", JSON.stringify(list));
+
+  renderLeaderboardUI(list);
+}
+
+function renderLeaderboardUI(list) {
+  const tbody = document.getElementById("leaderboardBody");
+  tbody.innerHTML = "";
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Tiada rekod tersimpan lagi.</td></tr>`;
+    return;
+  }
+
+  list.forEach((item, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="${index < 3 ? 'top-rank' : ''}">${index + 1} ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : ''}</td>
+      <td><strong>${item.name}</strong></td>
+      <td>${item.class}</td>
+      <td style="font-weight:800; color: var(--primary);">${item.score}</td>
+      <td>${item.time}s</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function switchTab(tab) {
+  document.getElementById("tabBtnReview").classList.remove("active");
+  document.getElementById("tabBtnLeaderboard").classList.remove("active");
+  document.getElementById("tabContentReview").style.display = "none";
+  document.getElementById("tabContentLeaderboard").style.display = "none";
+
+  if (tab === 'review') {
+    document.getElementById("tabBtnReview").classList.add("active");
+    document.getElementById("tabContentReview").style.display = "block";
+  } else {
+    document.getElementById("tabBtnLeaderboard").classList.add("active");
+    document.getElementById("tabContentLeaderboard").style.display = "block";
+  }
+}
+
+// BACKEND API AUTO-SYNC
+function sendDataToGoogleSheet(percentage) {
+  showStatusMsg("Sedang menghantar keputusan ke Google Sheets...", "error");
+
+  const payload = {
+    nama: currentState.studentName,
+    kelas: currentState.studentClass,
+    skor: currentState.score,
+    masa: currentState.timerSeconds,
+    peratus: `${percentage}%`
+  };
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    showStatusMsg("✅ Data berjaya dihantar dan disimpan ke Google Sheets!", "success");
+  })
+  .catch(err => {
+    console.error(err);
+    showStatusMsg("⚠️ Gagal menghantar data ke Google Sheets. Sila semak sambungan internet.", "error");
+  });
+}
+
+function showStatusMsg(msg, type) {
+  const el = document.getElementById("syncStatus");
+  el.textContent = msg;
+  el.className = `status-msg ${type}`;
+}
+
+function resetQuiz() {
+  showScreen("screenRegister");
+}
+</script>
+</body>
+</html>
